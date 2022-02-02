@@ -1,0 +1,9 @@
+QWidget{
+    background: white;
+}
+QLabel{
+    color: #0;
+}
+QComboBox{
+    color: gray;
+}
