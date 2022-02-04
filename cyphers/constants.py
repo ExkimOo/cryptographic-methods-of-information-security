@@ -1,5 +1,6 @@
 ENG_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 RUS_LETTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
+LANGUAGE = ['RU', 'ENG']
 eng_number_letter_upper = {number: letter for number, letter in enumerate(ENG_LETTERS)}
 eng_letter_number_upper = {letter: number for number, letter in enumerate(ENG_LETTERS)}
 rus_number_letter_upper = {number: letter for number, letter in enumerate(RUS_LETTERS)}
