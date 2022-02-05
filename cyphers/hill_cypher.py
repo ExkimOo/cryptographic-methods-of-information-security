@@ -1,10 +1,7 @@
 import numpy as np
 
-from constants import \
-    eng_number_letter_upper, eng_letter_number_upper, \
-    rus_letter_number_upper, rus_number_letter_upper, \
-    eng_letter_number_lower, eng_number_letter_lower, \
-    rus_letter_number_lower, rus_number_letter_lower
+from widgets.constants import \
+    eng_number_letter_upper, eng_letter_number_upper
 
 
 class Hill():

@@ -1,4 +1,4 @@
-from constants import \
+from widgets.constants import \
     eng_number_letter_upper, eng_letter_number_upper, \
     rus_letter_number_upper, rus_number_letter_upper, \
     eng_letter_number_lower, eng_number_letter_lower, \

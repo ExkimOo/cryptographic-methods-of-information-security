@@ -1,6 +1,6 @@
 import numpy as np
 
-from constants import RUS_LETTERS, ENG_LETTERS
+from widgets.constants import RUS_LETTERS, ENG_LETTERS
 
 
 class Playfair():
