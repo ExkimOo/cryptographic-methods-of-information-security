@@ -11,20 +11,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from .atbashWindow import Ui_Atbash
+from .cardanoGrilleWindow import Ui_CardanoGrille
+from .ceasarWindow import Ui_Ceasar
+from .polybiusSquareWindows import Ui_PolybiusSquare
+from .richelieuWindow import Ui_Richelieu
+from .scytaleWindow import Ui_Scytale
 
 
 class Ui_MainWindow(object):
-    def doubleClicked(self, item):
-        cypher = item.text().split()[0]
-        if cypher == 'Atbash':
-            self.atbashDialog()
-
-    def atbashDialog(self):
-        self.atbash = QtWidgets.QMainWindow()
-        self.ui = Ui_Atbash()
-        self.ui.setupUi(self.atbash)
-        self.atbash.show()
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 598)
@@ -94,6 +88,57 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def doubleClicked(self, item):
+        cypher = item.text().split()[0]
+        if cypher == 'Atbash':
+            self.atbashDialog()
+        elif cypher == 'Scytale':
+            self.scytaleDialog()
+        elif cypher == 'Polybius':
+            self.polybiusSquareDialog()
+        elif cypher == 'Ceasar':
+            self.ceasarSquareDialog()
+        elif cypher == 'Cardano':
+            self.cardanoGrilleDialog()
+        elif cypher == 'Richelieu':
+            self.richelieuDialog()
+
+    def atbashDialog(self):
+        self.atbash = QtWidgets.QMainWindow()
+        self.ui = Ui_Atbash()
+        self.ui.setupUi(self.atbash)
+        self.atbash.show()
+
+    def scytaleDialog(self):
+        self.scytale = QtWidgets.QMainWindow()
+        self.ui = Ui_Scytale()
+        self.ui.setupUi(self.scytale)
+        self.scytale.show()
+
+    def polybiusSquareDialog(self):
+        self.polybiusSquare = QtWidgets.QMainWindow()
+        self.ui = Ui_PolybiusSquare()
+        self.ui.setupUi(self.polybiusSquare)
+        self.polybiusSquare.show()
+
+    def ceasarSquareDialog(self):
+        self.ceasar = QtWidgets.QMainWindow()
+        self.ui = Ui_Ceasar()
+        self.ui.setupUi(self.ceasar)
+        self.ceasar.show()
+
+    def cardanoGrilleDialog(self):
+        self.cardano = QtWidgets.QMainWindow()
+        self.ui = Ui_CardanoGrille()
+        self.ui.setupUi(self.cardano)
+        self.cardano.show()
+
+    def richelieuDialog(self):
+        self.richelieu = QtWidgets.QMainWindow()
+        self.ui = Ui_Richelieu()
+        self.ui.setupUi(self.richelieu)
+        self.richelieu.show()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cryptographic Methods of Information Security"))
@@ -103,15 +148,15 @@ class Ui_MainWindow(object):
         item = self.cyphersList.item(0)
         item.setText(_translate("MainWindow", "Atbash cypher"))
         item = self.cyphersList.item(1)
-        item.setText(_translate("MainWindow", "Scytala cypher"))
+        item.setText(_translate("MainWindow", "Scytale cypher"))
         item = self.cyphersList.item(2)
-        item.setText(_translate("MainWindow", "Polibius Square cypher"))
+        item.setText(_translate("MainWindow", "Polybius Square cypher"))
         item = self.cyphersList.item(3)
-        item.setText(_translate("MainWindow", "Ceaser cypher"))
+        item.setText(_translate("MainWindow", "Ceasar cypher"))
         item = self.cyphersList.item(4)
         item.setText(_translate("MainWindow", "Cardano cypher"))
         item = self.cyphersList.item(5)
-        item.setText(_translate("MainWindow", "Rishelieu cypher"))
+        item.setText(_translate("MainWindow", "Richelieu cypher"))
         item = self.cyphersList.item(6)
         item.setText(_translate("MainWindow", "Alberti\'s Disk cypher"))
         item = self.cyphersList.item(7)

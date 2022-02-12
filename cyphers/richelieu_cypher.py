@@ -39,6 +39,8 @@ class Richelieu():
         for patterns in result:
             matches.append(patterns[0])
 
+        if len(matches) == 0: return
+
         patterns_length = len(reduce(lambda x,y: x + y, matches))
         if len(key) != patterns_length:
             print('Строка введена неверно')
