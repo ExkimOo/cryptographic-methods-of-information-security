@@ -1,42 +1,28 @@
-from widgets.constants import \
-    eng_number_letter_upper, eng_letter_number_upper, \
-    rus_letter_number_upper, rus_number_letter_upper, \
-    eng_letter_number_lower, eng_number_letter_lower, \
-    rus_letter_number_lower, rus_number_letter_lower
+from widgets.constants import ENG_LETTERS, RUS_LETTERS
 
 
 class Atbash:
     def encode(self, plaintext):
-        cyphertext = ''
-        for letter in plaintext:
-            result = letter
-            if letter in eng_letter_number_upper.keys():
-                result = eng_number_letter_upper[25 - eng_letter_number_upper[letter]]
-            elif letter in eng_letter_number_lower.keys():
-                result = eng_number_letter_lower[25 - eng_letter_number_lower[letter]]
-            elif letter in rus_letter_number_upper.keys():
-                result = rus_number_letter_upper[32 - rus_letter_number_upper[letter]]
-            elif letter in rus_letter_number_lower.keys():
-                result = rus_number_letter_lower[32 - rus_letter_number_lower[letter]]
-            cyphertext += result
-
-        return cyphertext
+        return self.__encrypt_decrypt(plaintext)
 
     def decode(self, cyphertext):
-        plaintext = ''
-        for letter in cyphertext:
-            result = letter
-            if letter in eng_letter_number_upper.keys():
-                result = eng_number_letter_upper[25 - eng_letter_number_upper[letter]]
-            elif letter in eng_letter_number_lower.keys():
-                result = eng_number_letter_lower[25 - eng_letter_number_lower[letter]]
-            elif letter in rus_letter_number_upper.keys():
-                result = rus_number_letter_upper[32 - rus_letter_number_upper[letter]]
-            elif letter in rus_letter_number_lower.keys():
-                result = rus_number_letter_lower[32 - rus_letter_number_lower[letter]]
-            plaintext += result
+        return self.__encrypt_decrypt(cyphertext)
 
-        return plaintext
+    def __encrypt_decrypt(self, text):
+        enc_dec_text = ''
+        for letter in text:
+            result = letter
+            if letter in ENG_LETTERS:
+                result = ENG_LETTERS[25 - ENG_LETTERS.index(letter)]
+            elif letter in ENG_LETTERS.lower():
+                result = ENG_LETTERS.lower()[25 - ENG_LETTERS.lower().index(letter)]
+            elif letter in RUS_LETTERS:
+                result = RUS_LETTERS[32 - RUS_LETTERS.index(letter)]
+            elif letter in RUS_LETTERS.lower():
+                result = RUS_LETTERS.lower()[32 - RUS_LETTERS.lower().index(letter)]
+            enc_dec_text += result
+
+        return enc_dec_text
 
 # a = Atbash()
 # print(a.encode('hello HELLO привет ПРИВЕТ'))

@@ -1,11 +1,2 @@
 ENG_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 RUS_LETTERS = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
-LANGUAGE = ['RUS', 'ENG']
-eng_number_letter_upper = {number: letter for number, letter in enumerate(ENG_LETTERS)}
-eng_letter_number_upper = {letter: number for number, letter in enumerate(ENG_LETTERS)}
-rus_number_letter_upper = {number: letter for number, letter in enumerate(RUS_LETTERS)}
-rus_letter_number_upper = {letter: number for number, letter in enumerate(RUS_LETTERS)}
-eng_number_letter_lower = {number: letter for number, letter in enumerate(ENG_LETTERS.lower())}
-eng_letter_number_lower = {letter: number for number, letter in enumerate(ENG_LETTERS.lower())}
-rus_number_letter_lower = {number: letter for number, letter in enumerate(RUS_LETTERS.lower())}
-rus_letter_number_lower = {letter: number for number, letter in enumerate(RUS_LETTERS.lower())}

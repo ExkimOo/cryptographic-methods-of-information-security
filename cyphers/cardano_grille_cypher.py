@@ -1,4 +1,4 @@
-from random import randint, seed
+from random import randint
 from random import choice
 
 import numpy as np
@@ -82,7 +82,7 @@ class CardanoGrille():
         for i in range(0, self.size // 2):
             chosen_positions += (rotated_grills[0][i, i:self.size - i - 1].tolist())
 
-        seed(0)
+        # seed(0)
         for order_num, position in enumerate(chosen_positions, 1):
             (i, j) = np.where(position == rotated_grills[randint(0, 3)])
             grille[i, j] = order_num

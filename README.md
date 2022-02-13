@@ -9,5 +9,5 @@
 8. **Gronsfeld** cypher ✓
 9. **Vigenere** cypher ✓
 10. **Playfair** cypher ✓
-11. **Hill** cypher ✖ (partially)
+11. **Hill** cypher ✓
 12. **Vernam** cypher ✓

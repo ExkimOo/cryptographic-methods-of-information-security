@@ -1,56 +1,44 @@
 import re
 
-from widgets.constants import \
-    eng_number_letter_upper, eng_letter_number_upper, \
-    rus_letter_number_upper, rus_number_letter_upper, \
-    eng_letter_number_lower, eng_number_letter_lower, \
-    rus_letter_number_lower, rus_number_letter_lower
+from widgets.constants import RUS_LETTERS, ENG_LETTERS
 
 
 class Ceasar:
     def encode(self, plaintext, key):
-        cyphertext = ''
-        key = self.__is_correct_key(key)
-        if key:
-            for letter in plaintext:
-                result = letter
-                if letter in eng_letter_number_upper.keys():
-                    result = eng_number_letter_upper[(eng_letter_number_upper[letter] + key) % 26]
-                elif letter in eng_letter_number_lower.keys():
-                    result = eng_number_letter_lower[(eng_letter_number_lower[letter] + key) % 26]
-                elif letter in rus_letter_number_upper.keys():
-                    result = rus_number_letter_upper[(rus_letter_number_upper[letter] + key) % 33]
-                elif letter in rus_letter_number_lower.keys():
-                    result = rus_number_letter_lower[(rus_letter_number_lower[letter] + key) % 33]
-                cyphertext += result
+        if not self.__is_correct_key(key):
+            return
 
-            return cyphertext
-        return
+        key = int(key)
+        return self.__enc_dec(plaintext, key)
 
     def decode(self, cyphertext, key):
-        plaintext = ''
-        key = self.__is_correct_key(key)
-        if key:
-            for letter in cyphertext:
-                result = letter
-                if letter in eng_letter_number_upper.keys():
-                    result = eng_number_letter_upper[(eng_letter_number_upper[letter] - key) % 26]
-                elif letter in eng_letter_number_lower.keys():
-                    result = eng_number_letter_lower[(eng_letter_number_lower[letter] - key) % 26]
-                elif letter in rus_letter_number_upper.keys():
-                    result = rus_number_letter_upper[(rus_letter_number_upper[letter] - key) % 33]
-                elif letter in rus_letter_number_lower.keys():
-                    result = rus_number_letter_lower[(rus_letter_number_lower[letter] - key) % 33]
-                plaintext += result
+        if not self.__is_correct_key(key):
+            return
 
-            return plaintext
-        return
+        key = -int(key)
+        return self.__enc_dec(cyphertext, key)
+
+    def __enc_dec(self, text, key):
+        enc_dec_text = ''
+        for letter in text:
+            result = letter
+            if letter in ENG_LETTERS:
+                result = ENG_LETTERS[(ENG_LETTERS.index(letter) + key) % 26]
+            elif letter in ENG_LETTERS.lower():
+                result = ENG_LETTERS.lower()[(ENG_LETTERS.lower().index(letter) + key) % 26]
+            elif letter in RUS_LETTERS:
+                result = RUS_LETTERS[(RUS_LETTERS.index(letter) + key) % 33]
+            elif letter in RUS_LETTERS.lower():
+                result = RUS_LETTERS.lower()[(RUS_LETTERS.lower().index(letter) + key) % 33]
+            enc_dec_text += result
+
+        return enc_dec_text
 
     def __is_correct_key(self, m):
-        if re.match(r'^[0-9]+$', m):
-            return int(m)
+        if re.match(r'^[0-9]{1,33}$', m):
+            return True
         return False
 
 # a = Ceasar()
-# print(a.encode('ABC abc ЭЮЯ эюя', 1))
-# print(a.decode('BCD bcd ЮЯА юяа', 1))
+# print(a.encode('ABC abc ЭЮЯ эюя', '11'))
+# print(a.decode('LMN lmn ЗИЙ зий', '11'))

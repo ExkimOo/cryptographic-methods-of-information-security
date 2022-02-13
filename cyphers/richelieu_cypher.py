@@ -4,33 +4,24 @@ from functools import reduce
 
 class Richelieu():
     def encode(self, plaintext, key):
-        keys_list = self.__proccess_key(key)
-        if keys_list:
-            count = 0
-            cyphertext = ''
-            for keys in keys_list:
-                part = plaintext[count + min(keys) - 1:count + max(keys)]
-                result = ''.join(part[i - 1] for i in keys)
-                cyphertext += result
-                count += len(keys)
-            cyphertext += plaintext[count:]
-
-            return cyphertext
-        return
+        return self.__enc_dec(plaintext, key)
 
     def decode(self, cyphertext, key):
+        return self.__enc_dec(cyphertext, key)
+
+    def __enc_dec(self, text, key):
         keys_list = self.__proccess_key(key)
         if keys_list:
             count = 0
-            plaintext = ''
+            enc_dec_text = ''
             for keys in keys_list:
-                part = cyphertext[count + min(keys) - 1:count + max(keys)]
+                part = text[count + min(keys) - 1:count + max(keys)]
                 result = ''.join(part[i - 1] for i in keys)
-                plaintext += result
+                enc_dec_text += result
                 count += len(keys)
-            plaintext += cyphertext[count:]
+            enc_dec_text += text[count:]
 
-            return plaintext
+            return enc_dec_text
         return
 
     def __proccess_key(self, key):
@@ -41,8 +32,8 @@ class Richelieu():
 
         if len(matches) == 0: return
 
-        patterns_length = len(reduce(lambda x,y: x + y, matches))
-        if len(key) != patterns_length:
+        patterns_len = len(reduce(lambda x,y: x + y, matches))
+        if len(key) != patterns_len:
             print('Строка введена неверно')
             return
 
@@ -57,6 +48,6 @@ class Richelieu():
 
         return result
 
-# a = Richelieu()
-# print(a.encode('КРИПТОГРАФИЯ', '(3,2,1)(4,2,3,1)(1)(2,1)(2,1)'))
-# print(a.decode(a.encode('КРИПТОГРАФИЯ', '(3,2,1)(4,2,3,1)(1)(2,1)(2,1)'), '(3,2,1)(4,2,3,1)(1)(2,1)(2,1)'))
+a = Richelieu()
+print(a.encode('КРИПТОГРАФИЯ', '(3,2,1)(4,2,3,1)(1)(2,1)(2,1)'))
+print(a.decode(a.encode('КРИПТОГРАФИЯ', '(3,2,1)(4,2,3,1)(1)(2,1)(2,1)'), '(3,2,1)(4,2,3,1)(1)(2,1)(2,1)'))

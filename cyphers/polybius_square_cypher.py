@@ -1,6 +1,6 @@
-import numpy as np
-
 import re
+
+import numpy as np
 
 from widgets.constants import RUS_LETTERS, ENG_LETTERS
 
