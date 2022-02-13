@@ -4,3 +4,5 @@ venv/
 .idea/
 __pycache__/
 breeze_resources.py
+build/
+dist/
