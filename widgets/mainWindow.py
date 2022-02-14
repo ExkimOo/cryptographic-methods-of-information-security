@@ -13,9 +13,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from .atbashWindow import Ui_Atbash
 from .cardanoGrilleWindow import Ui_CardanoGrille
 from .ceasarWindow import Ui_Ceasar
+from .gronsfeldWindow import Ui_Gronsfeld
+from .hillWindow import Ui_Hill
+from .playfairWindow import Ui_Playfair
 from .polybiusSquareWindows import Ui_PolybiusSquare
 from .richelieuWindow import Ui_Richelieu
 from .scytaleWindow import Ui_Scytale
+from .vernamWindow import Ui_Vernam
+from .vigenereWindow import Ui_Vigenere
 
 
 class Ui_MainWindow(object):
@@ -102,6 +107,16 @@ class Ui_MainWindow(object):
             self.cardanoGrilleDialog()
         elif cypher == 'Richelieu':
             self.richelieuDialog()
+        elif cypher == 'Playfair':
+            self.playfairDialog()
+        elif cypher == 'Vigenere':
+            self.vigenereDialog()
+        elif cypher == 'Gronsfeld':
+            self.gronsfeldDialog()
+        elif cypher == 'Hill':
+            self.hillDialog()
+        elif cypher == 'Vernam':
+            self.vernamDialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -138,6 +153,36 @@ class Ui_MainWindow(object):
         self.ui = Ui_Richelieu()
         self.ui.setupUi(self.richelieu)
         self.richelieu.show()
+
+    def playfairDialog(self):
+        self.playfair = QtWidgets.QMainWindow()
+        self.ui = Ui_Playfair()
+        self.ui.setupUi(self.playfair)
+        self.playfair.show()
+
+    def vigenereDialog(self):
+        self.vigenere = QtWidgets.QMainWindow()
+        self.ui = Ui_Vigenere()
+        self.ui.setupUi(self.vigenere)
+        self.vigenere.show()
+
+    def gronsfeldDialog(self):
+        self.gronsfeld = QtWidgets.QMainWindow()
+        self.ui = Ui_Gronsfeld()
+        self.ui.setupUi(self.gronsfeld)
+        self.gronsfeld.show()
+
+    def hillDialog(self):
+        self.hill = QtWidgets.QMainWindow()
+        self.ui = Ui_Hill()
+        self.ui.setupUi(self.hill)
+        self.hill.show()
+
+    def vernamDialog(self):
+        self.vernam = QtWidgets.QMainWindow()
+        self.ui = Ui_Vernam()
+        self.ui.setupUi(self.vernam)
+        self.vernam.show()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
