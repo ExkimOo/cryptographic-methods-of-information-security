@@ -2,6 +2,7 @@ import pytest
 
 from cyphers.atbash_cypher import Atbash
 
+
 @pytest.mark.parametrize('plaintext, cyphertext', [('hello HELLO привет ПРИВЕТ', 'svool SVOOL поцэъм ПОЦЭЪМ'),
                                                    ('', '')])
 def test_encode(plaintext, cyphertext):
