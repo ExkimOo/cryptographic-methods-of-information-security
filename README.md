@@ -4,7 +4,7 @@
 3. **Polibius** Square cypher ✓
 4. **Ceaser** cypher ✓
 5. **Cardano** cypher ✓
-6. **Rishelieu** cypher ✓
+6. **Richelieu** cypher ✓
 7. **Alberti's Disk** cypher ✖
 8. **Gronsfeld** cypher ✓
 9. **Vigenere** cypher ✓
