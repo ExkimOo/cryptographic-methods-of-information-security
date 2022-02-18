@@ -2,32 +2,33 @@ import re
 
 import numpy as np
 
-from widgets.constants import ENG_LETTERS, RUS_LETTERS
-
-ENG_LETTERS += ' .?'
-RUS_LETTERS += ' .?!'
+# from widgets.constants import ENG_LETTERS, RUS_LETTERS
+#
+# ENG_LETTERS += ' .?'
+# RUS_LETTERS += ' .?!'
 
 class Hill():
-    def __init__(self, key, lang):
+    def __init__(self, key, alphabet):
         self.key = key
-        self.lang = lang
-        if self.lang == 'ENG':
-            self.LETTERS = ENG_LETTERS
-        else:
-            self.LETTERS = RUS_LETTERS
+        self.LETTERS = ''
+        if alphabet:
+            self.LETTERS = alphabet
         self.modulo = len(self.LETTERS)
 
     def encode(self, plaintext):
-        n = self.__is_correct_key()
+        n = self.is_correct_key()
         if not n:
             return
+
+        plaintext = plaintext
 
         cyphertext = []
         if self.__is_correct_text(plaintext):
             n = n.astype(np.int64)
             key_matrix = np.array([self.LETTERS.index(letter) for letter in self.key]).reshape((n, n))
+
             if len(plaintext) % n != 0:
-                plaintext += ' '*(n - len(plaintext) % n)
+                plaintext += plaintext[-1]*(n - len(plaintext) % n)
 
             for i in range(0, len(plaintext), n):
                 numbers_vector = np.array([self.LETTERS.index(letter) for letter in plaintext[i:i + n]])
@@ -37,7 +38,7 @@ class Hill():
         return ''.join(cyphertext)
 
     def decode(self, cyphertext):
-        n = self.__is_correct_key()
+        n = self.is_correct_key()
         if not n:
             return
 
@@ -45,15 +46,14 @@ class Hill():
         if self.__is_correct_text(cyphertext):
             n = n.astype(np.int64)
             key_matrix = np.array([self.LETTERS.index(letter) for letter in self.key]).reshape((n, n))
-            inv_key_matrix = self.__invert_matrix(key_matrix)
+            inv_key_matrix = self.invert_matrix(key_matrix)
 
             if not np.all(inv_key_matrix):
-                print(inv_key_matrix)
                 print('Матрица является вырожденной, декодирование невозможно')
                 return
 
             if len(cyphertext) % n != 0:
-                cyphertext += ' '*(n - len(cyphertext) % n)
+                cyphertext += plaintext[-1]*(n - len(cyphertext) % n)
 
             for i in range(0, len(cyphertext), n):
                 numbers_vector = np.array([self.LETTERS.index(letter) for letter in cyphertext[i:i + n]])
@@ -62,12 +62,15 @@ class Hill():
 
         return ''.join(plaintext)
 
-    def __invert_matrix(self, key_matrix):
+    def invert_matrix(self, key_matrix):
         n = key_matrix.shape[0]
 
-        det = np.linalg.det(key_matrix) % self.modulo
+        det = np.round(np.linalg.det(key_matrix) % self.modulo)
         det = det.astype(np.int64)
+
         _, inversed_det, _ = self.__gcdext(det, self.modulo)
+        if det*inversed_det % self.modulo != 1:
+            return np.zeros(1)
 
         adjunct_matrix = np.empty((n, n), dtype=np.int64)
 
@@ -87,30 +90,31 @@ class Hill():
             div, x, y = self.__gcdext(num2 % num1, num1)
         return (div, y - (num2 // num1) * x, x)
 
-    def __is_correct_key(self):
+    def is_correct_key(self):
         n = np.sqrt(len(self.key))
+
+        if n == 0:
+            return
+
+        if len(self.LETTERS) == 0:
+            return
+
         if not n.is_integer():
             print('Длина ключа должна быть равна квадрату натурального числа')
             return
 
-        if self.lang == 'ENG' and re.match(r'^[A-Z .?]+$', self.key):
-            return np.round(n)
-        elif self.lang == 'RUS' and re.match(r'^[А-Я .?!]+$', self.key):
+        if re.match("^[" + "".join(self.LETTERS) + "]+$", self.key):
             return np.round(n)
         else:
             print('Неправильный ключ')
             return
 
     def __is_correct_text(self, text):
-        if self.lang == 'ENG' and re.match(r'^[A-Z .?]+$', text):
-            return True
-        elif self.lang == 'RUS' and re.match(r'^[А-Я .?!]+$', text):
+        if len(self.LETTERS) == 0:
+            return
+
+        if re.match("^[" + "".join(self.LETTERS) + "]+$", text):
             return True
         else:
             print('Неправильный текст')
             return
-
-# a = Hill('HELL', 'ENG')
-# print(a.encode('ABCD EFGH IJKL.'))
-# print(a.decode('EL  YLBFIPFN.?DD'))
-
