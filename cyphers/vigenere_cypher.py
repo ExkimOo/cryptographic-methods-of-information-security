@@ -58,7 +58,7 @@ class Vigenere:
     def __is_correct_key(self, key):
         if re.match(r'^[A-Za-z]+$', key) and self.lang == 'ENG':
             return True
-        if re.match(r'^[А-Яа-я]+$', key) and self.lang == 'RUS':
+        if re.match(r'^[А-Яа-яЕё]+$', key) and self.lang == 'RUS':
             return True
         return False
 

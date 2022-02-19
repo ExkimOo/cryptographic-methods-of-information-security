@@ -11,11 +11,12 @@ class Playfair():
         self.key = key.upper().replace('J', 'I').replace('Ё', 'Е')
 
     def encode(self, plaintext):
+        plaintext = self.__remove_letters(plaintext)
         return self.__enc_dec(plaintext, 'enc')
 
     def decode(self, cyphertext):
         return self.__enc_dec(cyphertext, 'dec')
-    
+
     def __enc_dec(self, text, method):
         if not self.__is_correct_key():
             return
@@ -23,7 +24,7 @@ class Playfair():
         if not self.__is_correct_text(text):
             return
 
-        matrix = self.__generate_matrix(self.key)
+        matrix = self.generate_matrix()
         enc_dec_text = ''
         text = text.upper()
 
@@ -73,10 +74,10 @@ class Playfair():
 
         return enc_dec_text
 
-    def __generate_matrix(self, key):
+    def generate_matrix(self):
         matrix = ''
         if self.lang == 'ENG':
-            for letter in key.replace('J', ''):
+            for letter in self.key.replace('J', ''):
                 if letter not in matrix:
                     matrix += letter
 
@@ -86,7 +87,7 @@ class Playfair():
 
             matrix = np.array(list(matrix.replace('J', ''))).reshape((5, 5))
         else:
-            for letter in key.replace('Ё', 'Е'):
+            for letter in self.key.replace('Ё', 'Е'):
                 if letter not in matrix:
                     matrix += letter
 
@@ -97,6 +98,14 @@ class Playfair():
             matrix = np.array(list(matrix.replace('Ё', ''))).reshape((4, 8))
 
         return matrix
+
+    def __remove_letters(self, text):
+        if self.lang == 'ENG':
+            text = ''.join([letter for letter in text.upper() if letter in ENG_LETTERS])
+        else:
+            text = ''.join([letter for letter in text.upper() if letter in RUS_LETTERS])
+
+        return text
 
     def __is_correct_key(self):
         if self.lang == 'ENG' and re.match(r'^[A-Z]*$', self.key):
@@ -116,9 +125,8 @@ class Playfair():
             print('Неправильный текст')
             return
 
-
-a = Playfair('ENG', 'WHEATSON')
-print(a.encode('IDIOCYOFTENLOOKSLIKEINTELLIGENCES'))
+# a = Playfair('ENG', 'WHEATSON')
+# print(a.encode('IDIOCYOFTENLOOKSLIKEINTELLIGENCES'))
 # print(a.encode('IDIOCYOFTENLOOKSLIKEINTELLIGENCE'))
 # print(a.decode('KFFBBZFMWASPNVCFDUKDAGCEWPQDPNBSNE'))
 # print(a.decode('KFFBBZFMWASPNVCFDUKDAGCEWPQDPNBSWN'))

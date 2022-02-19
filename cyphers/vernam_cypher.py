@@ -18,13 +18,13 @@ class Vernam():
     def __enc_dec(self, text, key):
         text_bin = reduce(lambda x, y: x + y, [bin(ord(letter))[2:].zfill(8) for letter in text])
         enc_dec_text = ''
-        for i in range(0, len(key), 8):
+        for i in range(0, len(text)*8, 8):
             enc_dec_text += chr(int(text_bin[i:i + 8], 2) ^ int(key[i:i + 8], 2))
 
         return enc_dec_text
 
     def __is_correct_key(self, text, key):
-        if not re.match(r'^[0-1]+$', key):
+        if not re.match(r'^[01]+$', key):
             print('Ключ содержит недопустимые символы')
             return False
 
@@ -33,9 +33,3 @@ class Vernam():
             return False
 
         return True
-
-a = Vernam()
-print(a.encode('KOD', '101011010111101010101011'))
-print(a.decode('æ5ï', '101011010111101010101011'))
-
-

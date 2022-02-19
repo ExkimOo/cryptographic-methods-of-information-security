@@ -11,24 +11,30 @@ class Richelieu():
 
     def __enc_dec(self, text, key):
         keys_list = self.__proccess_key(key)
-        if keys_list:
-            count = 0
-            enc_dec_text = ''
-            for keys in keys_list:
-                if len(keys) == 1 and keys[0] != 1:
-                    return
 
-                if count + max(keys) >= len(keys):
-                    return
+        if not keys_list:
+            return
 
-                part = text[count + min(keys) - 1:count + max(keys)]
-                result = ''.join(part[i - 1] for i in keys)
-                enc_dec_text += result
-                count += len(keys)
-            enc_dec_text += text[count:]
+        count = 0
+        enc_dec_text = ''
+        for keys in keys_list:
+            if 0 in keys:
+                return
 
-            return enc_dec_text
-        return
+            if len(keys) == 1 and keys[0] != 1:
+                return
+
+            if count + max(keys) >= len(text):
+                return
+
+            part = text[count + min(keys) - 1:count + max(keys)]
+            result = ''.join(part[i - 1] for i in keys)
+            enc_dec_text += result
+            count += len(keys)
+
+        enc_dec_text += text[count:]
+
+        return enc_dec_text
 
     def __proccess_key(self, key):
         result = re.findall(r'(\(((\d+,)*\d+)\))', key)
