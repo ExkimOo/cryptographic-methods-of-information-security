@@ -23,13 +23,13 @@ class Gronsfeld():
 
             result = letter
             if letter in ENG_LETTERS:
-                result = ENG_LETTERS[ENG_LETTERS.index(letter) + int(number)]
+                result = ENG_LETTERS[(ENG_LETTERS.index(letter) + int(number)) % 26]
             elif letter in ENG_LETTERS.lower():
-                result = ENG_LETTERS.lower()[ENG_LETTERS.lower().index(letter) + int(number)]
+                result = ENG_LETTERS.lower()[(ENG_LETTERS.lower().index(letter) + int(number)) % 26]
             elif letter in RUS_LETTERS:
-                result = RUS_LETTERS[RUS_LETTERS.index(letter) + int(number)]
+                result = RUS_LETTERS[(RUS_LETTERS.index(letter) + int(number)) % 33]
             elif letter in RUS_LETTERS.lower():
-                result = RUS_LETTERS.lower()[RUS_LETTERS.lower().index(letter) + int(number)]
+                result = RUS_LETTERS.lower()[(RUS_LETTERS.lower().index(letter) + int(number)) % 33]
             enc_dec_text += result
 
         return enc_dec_text
@@ -39,6 +39,6 @@ class Gronsfeld():
             return True
         return False
 
-a = Gronsfeld()
-print(a.encode('hellHELLпривПРИВ', '2015'))
-print(a.decode('jemqJEMQсрйжСРЙЖ', '2015'))
+# a = Gronsfeld()
+# print(a.encode('hellHELLпривПРИВ', '2015'))
+# print(a.decode('jemqJEMQсрйжСРЙЖ', '2015'))
