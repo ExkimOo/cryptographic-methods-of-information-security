@@ -10,7 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from cyphers.polybius_square_cypher import PolybiusSquare
+from cyphers.polybius_square_cypher import PolybiusSquare as ps
 
 
 class Ui_PolybiusSquare(object):
@@ -18,18 +18,18 @@ class Ui_PolybiusSquare(object):
         PolybiusSquare.setObjectName("PolybiusSquare")
         PolybiusSquare.resize(480, 374)
         self.verticalLayoutWidget = QtWidgets.QWidget(PolybiusSquare)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(60, 20, 371, 331))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(60, 20, 382, 331))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.name = QtWidgets.QLabel(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setPointSize(18)
-        self.label.setFont(font)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
+        self.name.setFont(font)
+        self.name.setAlignment(QtCore.Qt.AlignCenter)
+        self.name.setObjectName("name")
+        self.verticalLayout.addWidget(self.name)
         self.input = QtWidgets.QTextEdit(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -40,12 +40,12 @@ class Ui_PolybiusSquare(object):
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.encode = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.encrypt = QtWidgets.QPushButton(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.encode.setFont(font)
-        self.encode.setObjectName("encode")
-        self.horizontalLayout.addWidget(self.encode)
+        self.encrypt.setFont(font)
+        self.encrypt.setObjectName("encrypt")
+        self.horizontalLayout.addWidget(self.encrypt)
         self.method = QtWidgets.QComboBox(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -59,15 +59,23 @@ class Ui_PolybiusSquare(object):
         self.method.addItem("")
         self.method.addItem("")
         self.horizontalLayout.addWidget(self.method)
-        self.decode = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.lang = QtWidgets.QComboBox(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.decode.setFont(font)
-        self.decode.setObjectName("decode")
-        self.horizontalLayout.addWidget(self.decode)
+        self.lang.setFont(font)
+        self.lang.setObjectName("lang")
+        self.lang.addItem("")
+        self.lang.addItem("")
+        self.horizontalLayout.addWidget(self.lang)
+        self.decrypt = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.decrypt.setFont(font)
+        self.decrypt.setObjectName("decrypt")
+        self.horizontalLayout.addWidget(self.decrypt)
         self.horizontalLayout.setStretch(0, 3)
         self.horizontalLayout.setStretch(1, 2)
-        self.horizontalLayout.setStretch(2, 3)
+        self.horizontalLayout.setStretch(3, 3)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.output = QtWidgets.QTextEdit(self.verticalLayoutWidget)
         font = QtGui.QFont()
@@ -80,27 +88,33 @@ class Ui_PolybiusSquare(object):
         self.retranslateUi(PolybiusSquare)
         QtCore.QMetaObject.connectSlotsByName(PolybiusSquare)
 
-        self.encode.clicked.connect(self.encodeText)
-        self.decode.clicked.connect(self.decodeText)
+        self.encrypt.clicked.connect(self.encodeText)
+        self.decrypt.clicked.connect(self.decodeText)
+        self.lang.currentTextChanged.connect(self.updateLang)
+
+        self.polybius = ps(self.lang.currentText())
 
     def encodeText(self):
         plaintext = self.input.toPlainText()
-        pol = PolybiusSquare()
-        cyphertext = pol.encode(plaintext, self.method.currentText()[-1])
+        cyphertext = self.polybius.encode(plaintext, self.method.currentText()[-1])
         self.output.setText(cyphertext)
 
     def decodeText(self):
         cyphertext = self.input.toPlainText()
-        pol = PolybiusSquare()
-        plaintext = pol.decode(cyphertext, self.method.currentText()[-1])
+        plaintext = self.polybius.decode(cyphertext, self.method.currentText()[-1])
         self.output.setText(plaintext)
+
+    def updateLang(self):
+        self.polybius = ps(self.lang.currentText())
 
     def retranslateUi(self, PolybiusSquare):
         _translate = QtCore.QCoreApplication.translate
         PolybiusSquare.setWindowTitle(_translate("PolybiusSquare", "Polybius Square"))
-        self.label.setText(_translate("PolybiusSquare", "Квадрат Полибия"))
-        self.encode.setText(_translate("PolybiusSquare", "Зашифровать"))
+        self.name.setText(_translate("PolybiusSquare", "Квадрат Полибия"))
+        self.encrypt.setText(_translate("PolybiusSquare", "Зашифровать"))
         self.method.setItemText(0, _translate("PolybiusSquare", "Метод 1"))
         self.method.setItemText(1, _translate("PolybiusSquare", "Метод 2"))
         self.method.setItemText(2, _translate("PolybiusSquare", "Метод 3"))
-        self.decode.setText(_translate("PolybiusSquare", "Расшифровать"))
+        self.lang.setItemText(0, _translate("PolybiusSquare", "ENG"))
+        self.lang.setItemText(1, _translate("PolybiusSquare", "RUS"))
+        self.decrypt.setText(_translate("PolybiusSquare", "Расшифровать"))
