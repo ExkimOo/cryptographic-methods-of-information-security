@@ -25,43 +25,34 @@ class Playfair():
             return
 
         matrix = self.generate_matrix()
-        enc_dec_text = ''
-        text = text.upper()
+        text = text.upper().replace('J', 'I').replace('Ё', 'Е')
 
         if self.lang == 'ENG':
-            text_without_repetitions = text.replace('J', 'I')
-            rare_letter = 'X'
             row_len = 5
             col_len = 5
+            rare_letter = 'X'
         else:
-            text_without_repetitions = text.replace('Ё', 'Е')
-            rare_letter = 'Ъ'
             row_len = 4
             col_len = 8
+            rare_letter = 'Ъ'
 
         incr_decr = 1
         if method == 'dec':
             incr_decr = -1
 
-        result = ''
-        added_symbols = 0
-        for i in range(0, len(text_without_repetitions) - 1, 2):
-            if text_without_repetitions[i] == text_without_repetitions[i + 1] and (i + added_symbols) % 2 == 0:
-                result += text_without_repetitions[i] + rare_letter + text_without_repetitions[i + 1]
-                added_symbols += 1
-            else:
-                result += text_without_repetitions[i:i + 2]
+        while True:
+            indexes = [(m.start(0), m.end(0)) for m in re.finditer(r'([A-Za-z])\1', text) if m.start(0) % 2 == 0]
+            if not indexes:
+                break
+            text = ''.join((text[:indexes[0][0] + 1], rare_letter, text[indexes[0][1] - 1:]))
 
-        if len(text_without_repetitions) % 2 == 1:
-            result += text[-1]
-        text_without_repetitions = result
+        if len(text) % 2 == 1:
+            text += rare_letter
 
-        if len(text_without_repetitions) % 2 == 1:
-            text_without_repetitions += rare_letter
-
-        for i in range(0, len(text_without_repetitions), 2):
-            (i1, j1) = map(int, np.where(text_without_repetitions[i] == matrix))
-            (i2, j2) = map(int, np.where(text_without_repetitions[i + 1] == matrix))
+        enc_dec_text = ''
+        for i in range(0, len(text), 2):
+            (i1, j1) = map(int, np.where(text[i] == matrix))
+            (i2, j2) = map(int, np.where(text[i + 1] == matrix))
 
             if i1 == i2:
                 enc_dec_text += (str(matrix[i1][(j1 + incr_decr) % col_len]) +
@@ -108,9 +99,9 @@ class Playfair():
         return text
 
     def __is_correct_key(self):
-        if self.lang == 'ENG' and re.match(r'^[A-Z]*$', self.key):
+        if self.lang == 'ENG' and re.match(r'^[A-Za-z]*$', self.key):
             return True
-        elif self.lang == 'RUS' and re.match(r'^[А-Я]*$', self.key):
+        elif self.lang == 'RUS' and re.match(r'^[А-Яа-яЁё]*$', self.key):
             return True
         else:
             print('Неправильный ключ')
@@ -119,18 +110,8 @@ class Playfair():
     def __is_correct_text(self, text):
         if self.lang == 'ENG' and re.match(r'^[A-Za-z]+$', text):
             return True
-        elif self.lang == 'RUS' and re.match(r'^[А-Яа-я]+$', text):
+        elif self.lang == 'RUS' and re.match(r'^[А-Яа-яЁё]+$', text):
             return True
         else:
             print('Неправильный текст')
             return
-
-# a = Playfair('ENG', 'WHEATSON')
-# print(a.encode('IDIOCYOFTENLOOKSLIKEINTELLIGENCES'))
-# print(a.encode('IDIOCYOFTENLOOKSLIKEINTELLIGENCE'))
-# print(a.decode('KFFBBZFMWASPNVCFDUKDAGCEWPQDPNBSNE'))
-# print(a.decode('KFFBBZFMWASPNVCFDUKDAGCEWPQDPNBSWN'))
-#
-# a = Playfair('RUS')
-# print(a.encode('АТААКА', ''))
-# print(a.decode('ВРВШВИВШ', ''))
