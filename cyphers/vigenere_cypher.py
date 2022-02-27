@@ -4,62 +4,68 @@ from widgets.constants import ENG_LETTERS, RUS_LETTERS
 
 
 class Vigenere:
-    def __init__(self, lang='ENG'):
-        self.lang = lang
-
-        if lang == 'ENG':
-            self.LETTERS = ENG_LETTERS
-            self.LETTERS_LOWER = ENG_LETTERS.lower()
-        else:
-            self.LETTERS = RUS_LETTERS
-            self.LETTERS_LOWER = RUS_LETTERS.lower()
-
-        self.modulo = len(self.LETTERS)
+    def __init__(self):
+        self.ENG_LETTERS = ENG_LETTERS
+        self.ENG_LETTERS_LOWER = ENG_LETTERS.lower()
+        self.RUS_LETTERS = RUS_LETTERS
+        self.RUS_LETTERS_LOWER = RUS_LETTERS.lower()
 
     def encode(self, plaintext, key):
-        if not self.__is_correct_key(key):
-            return
-
         return self.__enc_dec(plaintext, key)
 
     def decode(self, cyphertext, key):
-        if not self.__is_correct_key(key):
-            return
-
         return self.__enc_dec(cyphertext, key, 'dec')
 
     def __enc_dec(self, text, key, method='enc'):
-        key_length = len(key)
-        enc_dec_text = ''
+        key_lang = self.__is_correct_key(key)
+        if not key_lang:
+            print('Неверный ключ')
+            return
 
+        key_vector = self.__key_to_numbers_vector(key, key_lang)
+        key_length = len(key_vector)
+
+        enc_dec_text = ''
         for i in range(len(text)):
             result = text[i]
-            if text[i] in self.LETTERS:
-                t_index = self.LETTERS.index(text[i])
-                k_index = self.LETTERS.index(key[i % key_length].upper())
 
-                if method == 'dec':
-                    k_index = -k_index
+            k_index = key_vector[i % key_length]
+            if method == 'dec':
+                k_index = -k_index
 
-                result = self.LETTERS[(t_index + k_index) % self.modulo]
-            elif text[i] in self.LETTERS_LOWER:
-                t_index = self.LETTERS_LOWER.index(text[i])
-                k_index = self.LETTERS_LOWER.index(key[i % key_length].lower())
-
-                if method == 'dec':
-                    k_index = -k_index
-
-                result = self.LETTERS_LOWER[(t_index + k_index) % self.modulo]
+            if text[i] in self.ENG_LETTERS:
+                t_index = self.ENG_LETTERS.index(text[i])
+                result = self.ENG_LETTERS[(t_index + k_index) % 26]
+            elif text[i] in self.ENG_LETTERS_LOWER:
+                t_index = self.ENG_LETTERS_LOWER.index(text[i])
+                result = self.ENG_LETTERS_LOWER[(t_index + k_index) % 26]
+            elif text[i] in self.RUS_LETTERS:
+                t_index = self.RUS_LETTERS.index(text[i])
+                result = self.RUS_LETTERS[(t_index + k_index) % 33]
+            elif text[i] in self.RUS_LETTERS_LOWER:
+                t_index = self.RUS_LETTERS_LOWER.index(text[i])
+                result = self.RUS_LETTERS_LOWER[(t_index + k_index) % 33]
 
             enc_dec_text += result
 
         return enc_dec_text
 
+    def __key_to_numbers_vector(self, key, key_lang):
+        key_vector = []
+        if key_lang == 'ENG':
+            for letter in key.upper():
+                key_vector.append(self.ENG_LETTERS.index(letter))
+        else:
+            for letter in key.upper():
+                key_vector.append(self.RUS_LETTERS.index(letter))
+
+        return key_vector
+
     def __is_correct_key(self, key):
-        if re.match(r'^[A-Za-z]+$', key) and self.lang == 'ENG':
-            return True
-        if re.match(r'^[А-Яа-яЕё]+$', key) and self.lang == 'RUS':
-            return True
+        if re.match(r'^[A-Za-z]+$', key):
+            return 'ENG'
+        if re.match(r'^[А-Яа-яЕё]+$', key):
+            return 'RUS'
         return False
 
 # a = Vigenere('RUS')
