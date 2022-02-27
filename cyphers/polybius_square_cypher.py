@@ -19,7 +19,7 @@ class PolybiusSquare():
             cyphertext = self.__first_method(plaintext, 'enc')
         elif method == '2' or method == '3':
             plaintext = self.__remove_letters(plaintext)
-            print(self.lang)
+
             if self.lang == 'ENG':
                 polybius_square = self.eng_polybius_square
                 insert_indexes = [(m.start(0), m.end(0)) for m in re.finditer(r'[A-Za-z]+', plaintext)]

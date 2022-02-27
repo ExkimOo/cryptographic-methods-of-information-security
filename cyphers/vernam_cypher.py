@@ -16,10 +16,14 @@ class Vernam():
         return self.__enc_dec(cyphertext, key)
 
     def __enc_dec(self, text, key):
-        text_bin = reduce(lambda x, y: x + y, [bin(ord(letter))[2:].zfill(8) for letter in text])
+        text.encode('utf-8', 'replace')
+        if len(key) < len(text) * 16:
+            key += key * ((len(text) * 16 - len(key)) // len(key) + 1)
+        print(key)
+        text_bin = reduce(lambda x, y: x + y, [bin(ord(letter))[2:].zfill(16) for letter in text])
         enc_dec_text = ''
-        for i in range(0, len(text)*8, 8):
-            enc_dec_text += chr(int(text_bin[i:i + 8], 2) ^ int(key[i:i + 8], 2))
+        for i in range(0, len(text) * 16, 16):
+            enc_dec_text += chr(int(text_bin[i:i + 16], 2) ^ int(key[i:i + 16], 2))
 
         return enc_dec_text
 
@@ -28,8 +32,8 @@ class Vernam():
             print('Ключ содержит недопустимые символы')
             return False
 
-        if len(key) < len(text)*8:
-            print('Длина ключа в должна быть не меньше длины сообщения в бинарном виде')
-            return False
+        # if len(key) < len(text) * 16:
+        #     print('Длина ключа в должна быть не меньше длины сообщения в бинарном виде')
+        #     return False
 
         return True

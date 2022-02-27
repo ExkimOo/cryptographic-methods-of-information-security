@@ -39,6 +39,6 @@ class Gronsfeld():
             return True
         return False
 
-# a = Gronsfeld()
+# a = Gronsfeld()XYz 123 ЭЮя
 # print(a.encode('hellHELLпривПРИВ', '2015'))
 # print(a.decode('jemqJEMQсрйжСРЙЖ', '2015'))

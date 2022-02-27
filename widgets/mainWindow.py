@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from .albertiWindow import Ui_Alberti
 from .atbashWindow import Ui_Atbash
 from .cardanoGrilleWindow import Ui_CardanoGrille
 from .ceasarWindow import Ui_Ceasar
@@ -117,6 +118,8 @@ class Ui_MainWindow(object):
             self.hillDialog()
         elif cypher == 'Vernam':
             self.vernamDialog()
+        elif cypher == 'Alberti\'s':
+            self.albertiDialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -183,6 +186,12 @@ class Ui_MainWindow(object):
         self.ui = Ui_Vernam()
         self.ui.setupUi(self.vernam)
         self.vernam.show()
+
+    def albertiDialog(self):
+        self.alberti = QtWidgets.QMainWindow()
+        self.ui = Ui_Alberti()
+        self.ui.setupUi(self.alberti)
+        self.alberti.show()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
