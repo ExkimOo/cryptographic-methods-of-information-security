@@ -5,9 +5,9 @@
 4. **Ceaser** cypher ✓
 5. **Cardano** cypher ✓
 6. **Richelieu** cypher ✓
-7. **Alberti's Disk** cypher ✖
+7. **Alberti's Disk** cypher ✓
 8. **Gronsfeld** cypher ✓
 9. **Vigenere** cypher ✓
 10. **Playfair** cypher ✓
 11. **Hill** cypher ✓
-12. **Vernam** cypher ✓
+12. **Vernam** cypher ✖
