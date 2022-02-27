@@ -1,102 +1,83 @@
-import re
-
 from widgets.constants import ENG_LETTERS, RUS_LETTERS
+
+import re
 
 
 class Alberti:
-    def encode(self, plaintext, key, lang='ENG'):
-        if self.__is_correct_key(key, lang):
-            alphabet = self.__generate_alphabet(key, lang)
-            alphabet_length = len(alphabet)
-            key_length = len(key)
-            alphabet_number_letter_upper = {number: letter for number, letter in enumerate(alphabet)}
-            alphabet_letter_number_upper = {letter: number for number, letter in enumerate(alphabet)}
-            alphabet_number_letter_lower = {number: letter for number, letter in enumerate(alphabet.lower())}
-            alphabet_letter_number_lower = {letter: number for number, letter in enumerate(alphabet.lower())}
-            print(alphabet_number_letter_upper)
-            print(plaintext)
-            print(alphabet)
+    def __init__(self, key, shift, lang='ENG'):
+        self.lang = lang
+        self.shift = int(shift)
+        self.inside_alphabet, self.outside_alphabet = self.__generate_alphabet(key)
+        self.inside_alphabet_lower = self.inside_alphabet.lower()
+        self.outside_alphabet_lower = self.outside_alphabet.lower()
 
-            cyphertext=''
-            for i in range(len(plaintext)):
-                result = plaintext[i]
-                if plaintext[i] in alphabet_letter_number_upper.keys():
-                    result = alphabet_number_letter_upper[
-                        (alphabet_letter_number_upper[plaintext[i]] +
-                         alphabet_letter_number_upper[key[i % key_length]]) % alphabet_length
-                        ]
-                    print(alphabet_letter_number_upper[plaintext[i]], key[i % key_length])
-                elif plaintext[i] in alphabet_letter_number_lower.keys():
-                    result = alphabet_number_letter_lower[
-                        (alphabet_letter_number_lower[plaintext[i]] +
-                         alphabet_letter_number_lower[key[i % key_length].lower()]) % alphabet_length
-                        ]
-                cyphertext += result
+    def encrypt(self, plaintext):
+        inside_alphabet = self.inside_alphabet
 
-            return cyphertext
+        cyphertext = ''
+        for letter in plaintext:
+            result = letter
+            if letter in self.outside_alphabet:
+                result = inside_alphabet[(self.outside_alphabet.index(letter)) % len(inside_alphabet)]
+            elif letter in self.outside_alphabet_lower:
+                result = inside_alphabet.lower()[(self.outside_alphabet_lower.index(letter)) % len(inside_alphabet)]
 
-        return
+            inside_alphabet = inside_alphabet[self.shift:] + inside_alphabet[:self.shift]
 
-    # def decode(self, cyphertext, key, lang='RUS'):
-    #     if self.__is_correct_key(key, lang):
-    #         key_length = len(key)
-    #         plaintext = ''
-    #         if lang == 'ENG':
-    #             for i in range(len(cyphertext)):
-    #                 result = cyphertext[i]
-    #                 if cyphertext[i] in eng_letter_number_upper.keys():
-    #                     result = eng_number_letter_upper[
-    #                         (eng_letter_number_upper[cyphertext[i]] -
-    #                          eng_letter_number_upper[key[i % key_length]]) % 26
-    #                         ]
-    #                 elif cyphertext[i] in eng_letter_number_lower.keys():
-    #                     result = eng_number_letter_lower[
-    #                         (eng_letter_number_lower[cyphertext[i]] -
-    #                          eng_letter_number_lower[key[i % key_length].lower()]) % 26
-    #                         ]
-    #                 plaintext += result
-    #         elif lang == 'RUS':
-    #             for i in range(len(cyphertext)):
-    #                 result = cyphertext[i]
-    #                 if cyphertext[i] in rus_letter_number_upper.keys():
-    #                     result = rus_number_letter_upper[
-    #                         (rus_letter_number_upper[cyphertext[i]] -
-    #                          rus_letter_number_upper[key[i % key_length]]) % 33
-    #                         ]
-    #                 elif cyphertext[i] in rus_letter_number_lower.keys():
-    #                     result = rus_number_letter_lower[
-    #                         (rus_letter_number_lower[cyphertext[i]] -
-    #                          rus_letter_number_lower[key[i % key_length].lower()]) % 33
-    #                         ]
-    #                 plaintext += result
-    #
-    #         return plaintext
-    #
-    #     return
+            cyphertext += result
 
-    def __generate_alphabet(self, key, lang):
-        alphabet = ''
-        if lang == 'ENG':
-            LETTERS = ENG_LETTERS
+        return cyphertext
+
+    def decrypt(self, cyphertext):
+        inside_alphabet = self.inside_alphabet
+
+        plaintext = ''
+        for letter in cyphertext:
+            result = letter
+            if letter in self.outside_alphabet:
+                result = self.outside_alphabet[inside_alphabet.index(letter) % len(inside_alphabet)]
+            elif letter in self.outside_alphabet_lower:
+                result = self.outside_alphabet_lower[(inside_alphabet.lower().index(letter)) % len(inside_alphabet)]
+
+            inside_alphabet = inside_alphabet[self.shift:] + inside_alphabet[:self.shift]
+
+            plaintext += result
+
+        return plaintext
+
+    def __generate_alphabet(self, key):
+        if self.lang == 'ENG':
+            if self.__is_correct_key(key):
+                alphabet = ''
+                for letter in key.upper():
+                    if letter not in alphabet:
+                        alphabet += letter
+
+                for letter in ENG_LETTERS:
+                    if letter not in alphabet:
+                        alphabet += letter
+
+                return alphabet, ENG_LETTERS
+            else:
+                return ENG_LETTERS, ENG_LETTERS
         else:
-            LETTERS = RUS_LETTERS
+            if self.__is_correct_key(key):
+                alphabet = ''
+                for letter in key.upper():
+                    if letter not in alphabet:
+                        alphabet += letter
 
-        for letter in key:
-            if letter not in alphabet:
-                alphabet += letter
+                for letter in RUS_LETTERS:
+                    if letter not in alphabet:
+                        alphabet += letter
 
-        for letter in LETTERS:
-            if letter not in alphabet:
-                alphabet += letter
+                return alphabet, RUS_LETTERS
+            else:
+                return RUS_LETTERS, RUS_LETTERS
 
-        return alphabet
-
-    def __is_correct_key(self, key, lang):
-        if re.match(r'^[A-Za-z]+$', key) and lang == 'ENG':
+    def __is_correct_key(self, key):
+        if re.match(r'^[A-Za-z]*$', key) and self.lang == 'ENG':
             return True
-        if re.match(r'^[А-Яа-я]+$', key) and lang == 'RUS':
+        if re.match(r'^[А-Яа-яЕё]+$', key) and self.lang == 'RUS':
             return True
         return False
-
-a = Alberti()
-print(a.encode('HI', 'ACD', 'ENG'))
