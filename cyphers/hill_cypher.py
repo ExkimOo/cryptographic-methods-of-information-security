@@ -2,11 +2,6 @@ import re
 
 import numpy as np
 
-# from widgets.constants import ENG_LETTERS, RUS_LETTERS
-#
-# ENG_LETTERS += ' .?'
-# RUS_LETTERS += ' .?!'
-
 class Hill():
     def __init__(self, key, alphabet):
         self.key = key
@@ -53,7 +48,7 @@ class Hill():
                 return
 
             if len(cyphertext) % n != 0:
-                cyphertext += plaintext[-1]*(n - len(cyphertext) % n)
+                cyphertext += cyphertext[-1]*(n - len(cyphertext) % n)
 
             for i in range(0, len(cyphertext), n):
                 numbers_vector = np.array([self.LETTERS.index(letter) for letter in cyphertext[i:i + n]])
