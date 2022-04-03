@@ -10,18 +10,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from .albertiWindow import Ui_Alberti
-from .atbashWindow import Ui_Atbash
-from .cardanoGrilleWindow import Ui_CardanoGrille
-from .ceasarWindow import Ui_Ceasar
-from .gronsfeldWindow import Ui_Gronsfeld
-from .hillWindow import Ui_Hill
-from .playfairWindow import Ui_Playfair
-from .polybiusSquareWindows import Ui_PolybiusSquare
-from .richelieuWindow import Ui_Richelieu
-from .scytaleWindow import Ui_Scytale
-from .vernamWindow import Ui_Vernam
-from .vigenereWindow import Ui_Vigenere
+from widgets.albertiWindow import Ui_Alberti
+from widgets.atbashWindow import Ui_Atbash
+from widgets.cardanoGrilleWindow import Ui_CardanoGrille
+from widgets.ceasarWindow import Ui_Ceasar
+from widgets.gronsfeldWindow import Ui_Gronsfeld
+from widgets.hillWindow import Ui_Hill
+from widgets.playfairWindow import Ui_Playfair
+from widgets.polybiusSquareWindows import Ui_PolybiusSquare
+from widgets.richelieuWindow import Ui_Richelieu
+from widgets.scytaleWindow import Ui_Scytale
+from widgets.vernamWindow import Ui_Vernam
+from widgets.vigenereWindow import Ui_Vigenere
+from utils.freq_cryptanalysis.freqCryptanalysisWindow import Ui_FrequencyCryptanalysis
+from widgets.xorWindow import Ui_XOR
 
 
 class Ui_MainWindow(object):
@@ -55,6 +57,10 @@ class Ui_MainWindow(object):
         self.cyphersList.setViewMode(QtWidgets.QListView.ListMode)
         self.cyphersList.setItemAlignment(QtCore.Qt.AlignCenter)
         self.cyphersList.setObjectName("cyphersList")
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -120,6 +126,10 @@ class Ui_MainWindow(object):
             self.vernamDialog()
         elif cypher == 'Alberti\'s':
             self.albertiDialog()
+        elif cypher == 'Frequency':
+            self.frequencyCryptanalysisDialog()
+        elif cypher == 'XOR':
+            self.xorDialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -193,6 +203,18 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.alberti)
         self.alberti.show()
 
+    def frequencyCryptanalysisDialog(self):
+        self.freq = QtWidgets.QMainWindow()
+        self.ui = Ui_FrequencyCryptanalysis()
+        self.ui.setupUi(self.freq)
+        self.freq.show()
+
+    def xorDialog(self):
+        self.xor = QtWidgets.QMainWindow()
+        self.ui = Ui_XOR()
+        self.ui.setupUi(self.xor)
+        self.xor.show()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cryptographic Methods of Information Security"))
@@ -223,4 +245,8 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Hill cypher"))
         item = self.cyphersList.item(11)
         item.setText(_translate("MainWindow", "Vernam cypher"))
+        item = self.cyphersList.item(12)
+        item.setText(_translate("MainWindow", "Frequency Cryptanalysis"))
+        item = self.cyphersList.item(13)
+        item.setText(_translate("MainWindow", "XOR cypher"))
         self.cyphersList.setSortingEnabled(__sortingEnabled)

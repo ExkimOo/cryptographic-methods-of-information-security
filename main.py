@@ -1,11 +1,9 @@
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from PyQt5.QtCore import QFile, QTextStream
+import resources.breeze_resources
 
-from widgets.mainWindow import Ui_MainWindow
-
-from resources import breeze_resources
-
+from mainWindow import Ui_MainWindow
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
