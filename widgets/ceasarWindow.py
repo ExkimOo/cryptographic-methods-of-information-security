@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 
 from cyphers.caesar_cypher import Ceasar
 
@@ -16,7 +17,7 @@ from cyphers.caesar_cypher import Ceasar
 class Ui_Ceasar(object):
     def setupUi(self, Ceasar):
         Ceasar.setObjectName("Ceasar")
-        Ceasar.resize(478, 373)
+        Ceasar.resize(478, 377)
         self.verticalLayoutWidget = QtWidgets.QWidget(Ceasar)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(59, 20, 371, 341))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
@@ -57,6 +58,18 @@ class Ui_Ceasar(object):
         self.decode.setObjectName("decode")
         self.horizontalLayout.addWidget(self.decode)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.read = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read.setFont(font)
+        self.read.setObjectName("read")
+        self.verticalLayout.addWidget(self.read)
+        self.write = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.write.setFont(font)
+        self.write.setObjectName("write")
+        self.verticalLayout.addWidget(self.write)
         self.output = QtWidgets.QTextEdit(self.verticalLayoutWidget)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -70,6 +83,8 @@ class Ui_Ceasar(object):
 
         self.encode.clicked.connect(self.encodeText)
         self.decode.clicked.connect(self.decodeText)
+        self.read.clicked.connect(self.readFromFile)
+        self.write.clicked.connect(self.writeToFile)
 
     def encodeText(self):
         plaintext = self.textInput.toPlainText()
@@ -83,9 +98,23 @@ class Ui_Ceasar(object):
         plaintext = ceas.decode(cyphertext, self.keyInput.text())
         self.output.setText(plaintext)
 
+    def readFromFile(self):
+        path = QFileDialog.getOpenFileName()[0]
+        if path[-3:] == 'txt':
+            with open(path, 'r', encoding='utf-8') as file:
+                text = file.read()
+                self.textInput.setText(text)
+
+    def writeToFile(self):
+        path = QFileDialog.getOpenFileName()[0]
+        with open(path, 'w+', encoding='utf-8') as file:
+            file.write(self.output.toPlainText())
+
     def retranslateUi(self, Ceasar):
         _translate = QtCore.QCoreApplication.translate
         Ceasar.setWindowTitle(_translate("Ceasar", "Ceasar"))
         self.label.setText(_translate("Ceasar", "Цезарь"))
         self.encode.setText(_translate("Ceasar", "Зашифровать"))
         self.decode.setText(_translate("Ceasar", "Расшифровать"))
+        self.read.setText(_translate("Ceasar", "Открыть файл"))
+        self.write.setText(_translate("Ceasar", "Записать в файл"))
