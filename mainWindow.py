@@ -24,6 +24,7 @@ from widgets.vernamWindow import Ui_Vernam
 from widgets.vigenereWindow import Ui_Vigenere
 from utils.freq_cryptanalysis.freqCryptanalysisWindow import Ui_FrequencyCryptanalysis
 from widgets.xorWindow import Ui_XOR
+from widgets.desWindow import Ui_DES
 
 
 class Ui_MainWindow(object):
@@ -57,6 +58,8 @@ class Ui_MainWindow(object):
         self.cyphersList.setViewMode(QtWidgets.QListView.ListMode)
         self.cyphersList.setItemAlignment(QtCore.Qt.AlignCenter)
         self.cyphersList.setObjectName("cyphersList")
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -130,6 +133,8 @@ class Ui_MainWindow(object):
             self.frequencyCryptanalysisDialog()
         elif cypher == 'XOR':
             self.xorDialog()
+        elif cypher == 'DES':
+            self.desDialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -215,6 +220,12 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.xor)
         self.xor.show()
 
+    def desDialog(self):
+        self.des = QtWidgets.QMainWindow()
+        self.ui = Ui_DES()
+        self.ui.setupUi(self.des)
+        self.des.show()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cryptographic Methods of Information Security"))
@@ -249,4 +260,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Frequency Cryptanalysis"))
         item = self.cyphersList.item(13)
         item.setText(_translate("MainWindow", "XOR cypher"))
+        item = self.cyphersList.item(14)
+        item.setText(_translate("MainWindow", "DES cypher"))
         self.cyphersList.setSortingEnabled(__sortingEnabled)
