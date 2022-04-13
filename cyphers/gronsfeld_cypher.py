@@ -1,6 +1,6 @@
 import re
 
-from widgets.constants import ENG_LETTERS, RUS_LETTERS
+from constants.constants import ENG_LETTERS, RUS_LETTERS
 
 
 class Gronsfeld():

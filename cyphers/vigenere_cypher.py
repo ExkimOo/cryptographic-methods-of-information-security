@@ -1,6 +1,6 @@
 import re
 
-from widgets.constants import ENG_LETTERS, RUS_LETTERS
+from constants.constants import ENG_LETTERS, RUS_LETTERS
 
 
 class Vigenere:
@@ -17,7 +17,7 @@ class Vigenere:
         return self.__enc_dec(cyphertext, key, 'dec')
 
     def __enc_dec(self, text, key, method='enc'):
-        key_lang = self.__is_correct_key(key)
+        key_lang = self.__is_correct_key(key.upper())
         if not key_lang:
             print('Неверный ключ')
             return

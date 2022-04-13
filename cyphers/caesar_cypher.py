@@ -1,6 +1,6 @@
 import re
 
-from widgets.constants import RUS_LETTERS, ENG_LETTERS
+from constants.constants import RUS_LETTERS, ENG_LETTERS
 
 
 class Ceasar:

@@ -2,7 +2,7 @@ import re
 
 import numpy as np
 
-from widgets.constants import RUS_LETTERS, ENG_LETTERS
+from constants.constants import RUS_LETTERS, ENG_LETTERS
 
 
 class PolybiusSquare():
