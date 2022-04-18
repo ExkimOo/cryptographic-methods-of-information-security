@@ -11,6 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
+from PyQt5.QtWidgets import QFileDialog
 
 from cyphers.xor_cypher import XOR as xor
 
@@ -18,7 +19,7 @@ from cyphers.xor_cypher import XOR as xor
 class Ui_XOR(object):
     def setupUi(self, XOR):
         XOR.setObjectName("XOR")
-        XOR.resize(484, 374)
+        XOR.resize(484, 381)
         self.layoutWidget = QtWidgets.QWidget(XOR)
         self.layoutWidget.setGeometry(QtCore.QRect(40, 20, 411, 332))
         self.layoutWidget.setObjectName("layoutWidget")
@@ -44,6 +45,8 @@ class Ui_XOR(object):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.seed.setFont(font)
+        self.seed.setToolTipDuration(1)
+        self.seed.setText("")
         self.seed.setReadOnly(False)
         self.seed.setObjectName("seed")
         self.horizontalLayout.addWidget(self.seed)
@@ -54,6 +57,21 @@ class Ui_XOR(object):
         self.encryptDecrypt.setFont(font)
         self.encryptDecrypt.setObjectName("encryptDecrypt")
         self.verticalLayout.addWidget(self.encryptDecrypt)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.read = QtWidgets.QPushButton(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.read.setFont(font)
+        self.read.setObjectName("read")
+        self.horizontalLayout_2.addWidget(self.read)
+        self.write = QtWidgets.QPushButton(self.layoutWidget)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.write.setFont(font)
+        self.write.setObjectName("write")
+        self.horizontalLayout_2.addWidget(self.write)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.output = QtWidgets.QTextEdit(self.layoutWidget)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -65,9 +83,11 @@ class Ui_XOR(object):
         self.retranslateUi(XOR)
         QtCore.QMetaObject.connectSlotsByName(XOR)
 
-        self.encryptDecrypt.clicked.connect(self.encodeText)
-
         self.xor = xor()
+
+        self.encryptDecrypt.clicked.connect(self.encodeText)
+        self.read.clicked.connect(self.readFromFile)
+        self.write.clicked.connect(self.writeToFile)
 
         reg_ex = QRegExp(r'[0-9]+')
         input_validator = QRegExpValidator(reg_ex, self.seed)
@@ -79,9 +99,32 @@ class Ui_XOR(object):
             enc_dec_text = self.xor.encode(text, int(seed))
             self.output.setText(enc_dec_text)
 
+    def readFromFile(self):
+        path = QFileDialog.getOpenFileName()[0]
+        extension = path.split('/')[-1].split('.')[-1]
+
+        if extension != 'txt':
+            print('Ошибка формата файла')
+
+        with open(path, 'r', encoding='koi8-r') as file:
+            text = file.read()
+            self.input.setText(text)
+
+    def writeToFile(self):
+        path = QFileDialog.getOpenFileName()[0]
+        extension = path.split('/')[-1].split('.')[-1]
+
+        if extension != 'txt':
+            print('Ошибка формата файла')
+
+        with open(path, 'w+', encoding='koi8-r') as file:
+            file.write(self.output.toPlainText())
+
     def retranslateUi(self, XOR):
         _translate = QtCore.QCoreApplication.translate
         XOR.setWindowTitle(_translate("XOR", "XOR"))
         self.cypherName.setText(_translate("XOR", "XOR"))
         self.seed.setPlaceholderText(_translate("XOR", "seed"))
         self.encryptDecrypt.setText(_translate("XOR", "Зашифровать/Расшифровать"))
+        self.read.setText(_translate("XOR", "Открыть файл"))
+        self.write.setText(_translate("XOR", "Записать в файл"))
