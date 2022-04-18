@@ -14,6 +14,7 @@ from widgets.albertiWindow import Ui_Alberti
 from widgets.atbashWindow import Ui_Atbash
 from widgets.cardanoGrilleWindow import Ui_CardanoGrille
 from widgets.ceasarWindow import Ui_Ceasar
+from widgets.gostWindow import Ui_GOST
 from widgets.gronsfeldWindow import Ui_Gronsfeld
 from widgets.hillWindow import Ui_Hill
 from widgets.playfairWindow import Ui_Playfair
@@ -58,6 +59,8 @@ class Ui_MainWindow(object):
         self.cyphersList.setViewMode(QtWidgets.QListView.ListMode)
         self.cyphersList.setItemAlignment(QtCore.Qt.AlignCenter)
         self.cyphersList.setObjectName("cyphersList")
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -135,6 +138,8 @@ class Ui_MainWindow(object):
             self.xorDialog()
         elif cypher == 'DES':
             self.desDialog()
+        elif cypher == 'GOST':
+            self.gostDialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -226,6 +231,12 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.des)
         self.des.show()
 
+    def gostDialog(self):
+        self.gost = QtWidgets.QMainWindow()
+        self.ui = Ui_GOST()
+        self.ui.setupUi(self.gost)
+        self.gost.show()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cryptographic Methods of Information Security"))
@@ -262,4 +273,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "XOR cypher"))
         item = self.cyphersList.item(14)
         item.setText(_translate("MainWindow", "DES cypher"))
+        item = self.cyphersList.item(15)
+        item.setText(_translate("MainWindow", "GOST cypher"))
         self.cyphersList.setSortingEnabled(__sortingEnabled)
