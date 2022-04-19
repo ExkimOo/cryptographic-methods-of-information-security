@@ -10,4 +10,12 @@
 9. **Vigenere** cypher ✓
 10. **Playfair** cypher ✓
 11. **Hill** cypher ✓
-12. **Vernam** cypher ✖
+12. **Vernam** cypher ✓
+13. **Frequency cryptanalysis** ✓
+14. **Polyalphabetic cypher analysis** ✖
+    - **Coincidence** method ✖
+    - **Autocorrelation** method ✓
+    - **Kasiski** method ✓
+15. **XOR** cypher ✓
+16. **DES** cypher ✓
+17. **GOST-28147-89** cypher ✓
