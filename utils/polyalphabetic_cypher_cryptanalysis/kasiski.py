@@ -1,0 +1,37 @@
+# -*- coding: cp1251 -*-
+import re
+from math import gcd
+from collections import Counter
+
+class Kasiski:
+    def find_key_length(self, text):
+        text = re.sub(r'[^A-Zю-ъ╗]', '', text.upper())
+        patterns_distances = self.__count_distances(text)
+        patterns_lengths = self.__delete_odd_lengths(Counter(map(lambda x: gcd(*x), patterns_distances)))
+
+        return patterns_lengths.most_common(1)[0][0]
+
+    def __count_distances(self, text):
+        patterns_distances = []
+        for i in range(len(text) - 3):
+            indexes = [m.start(0) for m in re.finditer(text[i:i + 3], text)]
+            if len(indexes) >= 3:
+                patterns_distances.append([indexes[i + 1] - indexes[i] for i in range(len(indexes) - 1)])
+
+        return patterns_distances
+
+    def __delete_odd_lengths(self, patterns_lengths):
+        lengths_to_delete = []
+        for key in patterns_lengths.keys():
+            if key in (1, 2) or key > 20:
+                lengths_to_delete.append(key)
+
+        for length in lengths_to_delete:
+            patterns_lengths.pop(length)
+
+        return patterns_lengths
+
+
+# text = 'язяь ыцфхячаышпн тв пкшнссожкш жисащштячдъ кйвюючжыдухъ а уиесф ьы виуй ъосыю снпви вэы эиэысиив е окфчя вюунх ыж кыдтямачяк ы иййжфжкы щиямьр ывшнбучдх ггм кзъд кефнм ечвзкляпрфжэбф кцягиэвь мтвг вчюче кфийсюуимюхеэб ижк ййтысчхив г эжяибцшу янгфзмььн кзъд жягмйеькцшу жыгьн жяоккро я вюуибы чижягутя йгяюужы яиттгьн кзъд пкэмцшузф доукег мтвцук ьи ьсы чнекувскс ыйъикымйшщю евпчгшцвфтф ыж впьикыл дкбнфшпн йиъкшнфвфтоьизму уиеыф язяь яэкпмц ьопргогм вевсжфзеыся пшянмьи ыырфкрег язяоук яопэкеявьизмуы зисфшэк ъвбюевх ыпыр нетфшузф дуыыыунбучдт ыпыр ы глсб шыцеошкфоъкы е ьсащшкъф кыдтямачяф ьоабы йкыю снпви я кзъд п чъищыхиъы щвмкъдт дипваышпн штф мфштл епскйтрег с эыс вмьизфвйх вышиевгютдщят чимщыяжрю г язяь пцтокр г изэкен кп хняыу ютвщв ычънвюхнэьин жяилсасуэкф зымфыяачят мгмцъуячюйскю эиваля к цфттьоьсаеттьчвт кзэчючят мхх дкъвшк иызачянкеиэьир яыэжк мфштл е мтвйсые йивй чнытжввысв саэжыкзыцфгн кзъ шцъ щие витоъи ьсы ншкп юзбкеяфп зэвюу вююйьтжфжц мфшфе евнеиоэкйшо ычштяфзэкр я пкшнссоштрцжыл шнфвфтоьизмы сжызивюяопкю уяжке ккмик гкъу кзъ жтыэйтсчв еащ жтыэйтсчв ъьилыкзыцфгн яыэжк ъишыяюг ыьг вмяооцшу сцъ чнкфзняьи уэкпвытъиныф жтдсвмяд жц гчншьыг ппиотдуе кзъ ввьилы вгьц еимтрг'
+# a = Kasiski()
+# print(a.count_key_length(text))
