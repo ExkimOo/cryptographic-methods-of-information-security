@@ -9,12 +9,12 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QGridLayout, QVBoxLayout
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem, QVBoxLayout
 
 import pyqtgraph as pg
 import numpy as np
 
-from widgets.constants import RUS_LETTERS, ENG_LETTERS
+from constants.constants import RUS_LETTERS, ENG_LETTERS
 from utils.freq_cryptanalysis.freq_cryptanalysis import count_freq
 
 
