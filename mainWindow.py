@@ -14,7 +14,6 @@ from widgets.albertiWindow import Ui_Alberti
 from widgets.atbashWindow import Ui_Atbash
 from widgets.cardanoGrilleWindow import Ui_CardanoGrille
 from widgets.ceasarWindow import Ui_Ceasar
-from widgets.gostWindow import Ui_GOST
 from widgets.gronsfeldWindow import Ui_Gronsfeld
 from widgets.hillWindow import Ui_Hill
 from widgets.playfairWindow import Ui_Playfair
@@ -24,8 +23,10 @@ from widgets.scytaleWindow import Ui_Scytale
 from widgets.vernamWindow import Ui_Vernam
 from widgets.vigenereWindow import Ui_Vigenere
 from utils.freq_cryptanalysis.freqCryptanalysisWindow import Ui_FrequencyCryptanalysis
+from utils.polyalphabetic_cypher_cryptanalysis.polyCryptanalysisWindow import Ui_PolyalphabeticCryptanalysis
 from widgets.xorWindow import Ui_XOR
 from widgets.desWindow import Ui_DES
+from widgets.gostWindow import Ui_GOST
 
 
 class Ui_MainWindow(object):
@@ -59,6 +60,8 @@ class Ui_MainWindow(object):
         self.cyphersList.setViewMode(QtWidgets.QListView.ListMode)
         self.cyphersList.setItemAlignment(QtCore.Qt.AlignCenter)
         self.cyphersList.setObjectName("cyphersList")
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -134,6 +137,8 @@ class Ui_MainWindow(object):
             self.albertiDialog()
         elif cypher == 'Frequency':
             self.frequencyCryptanalysisDialog()
+        elif cypher == 'Polyalphabetic':
+            self.polyalphabeticCryptanalysisDialog()
         elif cypher == 'XOR':
             self.xorDialog()
         elif cypher == 'DES':
@@ -219,6 +224,12 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.freq)
         self.freq.show()
 
+    def polyalphabeticCryptanalysisDialog(self):
+        self.poly = QtWidgets.QMainWindow()
+        self.ui = Ui_PolyalphabeticCryptanalysis()
+        self.ui.setupUi(self.poly)
+        self.poly.show()
+
     def xorDialog(self):
         self.xor = QtWidgets.QMainWindow()
         self.ui = Ui_XOR()
@@ -244,35 +255,37 @@ class Ui_MainWindow(object):
         __sortingEnabled = self.cyphersList.isSortingEnabled()
         self.cyphersList.setSortingEnabled(False)
         item = self.cyphersList.item(0)
-        item.setText(_translate("MainWindow", "Atbash cypher"))
+        item.setText(_translate("MainWindow", "Atbash Cypher"))
         item = self.cyphersList.item(1)
-        item.setText(_translate("MainWindow", "Scytale cypher"))
+        item.setText(_translate("MainWindow", "Scytale Cypher"))
         item = self.cyphersList.item(2)
-        item.setText(_translate("MainWindow", "Polybius Square cypher"))
+        item.setText(_translate("MainWindow", "Polybius Square Cypher"))
         item = self.cyphersList.item(3)
-        item.setText(_translate("MainWindow", "Ceasar cypher"))
+        item.setText(_translate("MainWindow", "Ceasar Cypher"))
         item = self.cyphersList.item(4)
-        item.setText(_translate("MainWindow", "Cardano cypher"))
+        item.setText(_translate("MainWindow", "Cardano Cypher"))
         item = self.cyphersList.item(5)
-        item.setText(_translate("MainWindow", "Richelieu cypher"))
+        item.setText(_translate("MainWindow", "Richelieu Cypher"))
         item = self.cyphersList.item(6)
-        item.setText(_translate("MainWindow", "Alberti\'s Disk cypher"))
+        item.setText(_translate("MainWindow", "Alberti\'s Disk Cypher"))
         item = self.cyphersList.item(7)
-        item.setText(_translate("MainWindow", "Gronsfeld cypher"))
+        item.setText(_translate("MainWindow", "Gronsfeld Cypher"))
         item = self.cyphersList.item(8)
-        item.setText(_translate("MainWindow", "Vigenere cypher"))
+        item.setText(_translate("MainWindow", "Vigenere Cypher"))
         item = self.cyphersList.item(9)
-        item.setText(_translate("MainWindow", "Playfair cypher"))
+        item.setText(_translate("MainWindow", "Playfair Cypher"))
         item = self.cyphersList.item(10)
-        item.setText(_translate("MainWindow", "Hill cypher"))
+        item.setText(_translate("MainWindow", "Hill Cypher"))
         item = self.cyphersList.item(11)
-        item.setText(_translate("MainWindow", "Vernam cypher"))
+        item.setText(_translate("MainWindow", "Vernam Cypher"))
         item = self.cyphersList.item(12)
         item.setText(_translate("MainWindow", "Frequency Cryptanalysis"))
         item = self.cyphersList.item(13)
-        item.setText(_translate("MainWindow", "XOR cypher"))
+        item.setText(_translate("MainWindow", "Polyalphabetic Cryptanalysis"))
         item = self.cyphersList.item(14)
-        item.setText(_translate("MainWindow", "DES cypher"))
+        item.setText(_translate("MainWindow", "XOR Cypher"))
         item = self.cyphersList.item(15)
-        item.setText(_translate("MainWindow", "GOST cypher"))
+        item.setText(_translate("MainWindow", "DES Cypher"))
+        item = self.cyphersList.item(16)
+        item.setText(_translate("MainWindow", "GOST Cypher"))
         self.cyphersList.setSortingEnabled(__sortingEnabled)
