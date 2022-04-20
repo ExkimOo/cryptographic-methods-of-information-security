@@ -1,5 +1,6 @@
 # created by virtualenv automatically
 *ui
+*txt
 venv/
 .idea/
 __pycache__/
