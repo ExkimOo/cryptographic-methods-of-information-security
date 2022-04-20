@@ -1,6 +1,6 @@
+import re
 from collections import Counter
 
-import re
 from scipy.stats import chisquare
 import numpy as np
 
@@ -102,8 +102,3 @@ class Autocorrelation:
             key.append(alphabet[np.argmin(arr)])
 
         return ''.join(key)
-
-
-text = open('input.txt', 'r', encoding='utf-8').read()
-a = Autocorrelation()
-print(a.get_key(text, 'ENG'))
