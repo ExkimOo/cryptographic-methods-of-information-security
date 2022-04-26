@@ -106,8 +106,8 @@ class DES:
         return res_s_f
 
     def ECB(self, text, key, mode):
-        text = self.__expand_text_len(text)
-        key = self.__expand_key_len(key)
+        text = self.expand_text_len(text)
+        key = self.expand_key_len(key)
 
         text_bin = self.__text_to_bin(text)
         key_bin = self.__key_to_bin(key)
@@ -125,9 +125,9 @@ class DES:
         return ''.join(enc_dec_text)
 
     def CBC(self, text, key, init_vect_text, mode):
-        text = self.__expand_text_len(text)
-        key = self.__expand_key_len(key)
-        init_vect_text = self.__expand_key_len(init_vect_text)
+        text = self.expand_text_len(text)
+        key = self.expand_key_len(key)
+        init_vect_text = self.expand_key_len(init_vect_text)
 
         text_bin = self.__text_to_bin(text)
         key_bin = self.__key_to_bin(key)
@@ -148,9 +148,9 @@ class DES:
         return ''.join(enc_dec_text)
 
     def CFB(self, text, key, init_vect_text, mode):
-        text = self.__expand_text_len(text)
-        key = self.__expand_key_len(key)
-        init_vect_text = self.__expand_key_len(init_vect_text)
+        text = self.expand_text_len(text)
+        key = self.expand_key_len(key)
+        init_vect_text = self.expand_key_len(init_vect_text)
 
         text_bin = self.__text_to_bin(text)
         key_bin = self.__key_to_bin(key)
@@ -172,9 +172,9 @@ class DES:
         return ''.join(enc_dec_text)
 
     def OFB(self, text, key, init_vect_text, mode):
-        text = self.__expand_text_len(text)
-        key = self.__expand_key_len(key)
-        init_vect_text = self.__expand_key_len(init_vect_text)
+        text = self.expand_text_len(text)
+        key = self.expand_key_len(key)
+        init_vect_text = self.expand_key_len(init_vect_text)
 
         text_bin = self.__text_to_bin(text)
         key_bin = self.__key_to_bin(key)
@@ -194,13 +194,13 @@ class DES:
 
         return ''.join(enc_dec_text)
 
-    def __expand_text_len(self, text):
+    def expand_text_len(self, text):
         if len(text) % 8 != 0:
             text += ' ' * (8 - len(text) % 8)
 
         return text
 
-    def __expand_key_len(self, key):
+    def expand_key_len(self, key):
         if len(key) == 0:
             return 'DESkey56'
 
@@ -209,7 +209,7 @@ class DES:
 
         return key
 
-    def __expand_init_vect_len(self, init_vect):
+    def expand_init_vect_len(self, init_vect):
         if len(init_vect) == 0:
             return 'abcdefgh'
 
