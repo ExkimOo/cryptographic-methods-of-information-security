@@ -168,7 +168,6 @@ class DES:
                 enc_dec_text.append((self.encrypt(vect, key_bin) ^ text_bin[i:i + 64]).tobytes().decode('koi8-r'))
                 vect = text_bin[i:i + 64]
 
-        print(enc_dec_text)
         return ''.join(enc_dec_text)
 
     def OFB(self, text, key, init_vect_text, mode):

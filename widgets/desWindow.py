@@ -253,11 +253,14 @@ class Ui_DES(object):
 
                     if len(self.key.text()[:8]) < 8:
                         print('Короткий ключ')
+                        os.truncate(self.inputFilePath.text(), file_size)
                         return
 
-                    if len(self.initVect.text()[:8]) < 8:
-                        print('Короткий вектор')
-                        return
+                    if self.mode.currentText() != 'ECB':
+                        if len(self.initVect.text()[:8]) < 8:
+                            print('Короткий вектор')
+                            os.truncate(self.inputFilePath.text(), file_size)
+                            return
 
                     key_bin = bitarray.bitarray()
                     key_bin.frombytes(self.key.text()[:8].encode('koi8-r'))
@@ -266,6 +269,8 @@ class Ui_DES(object):
 
                     bytes_count = 0
                     begin_time = time()
+
+                    file_output.write(file_size.to_bytes(8, byteorder='big'))
                     match self.mode.currentText():
                         case 'ECB':
                             while (text := file_input.read(8)):
@@ -274,9 +279,10 @@ class Ui_DES(object):
                                 file_output.write(self.des.encrypt(text_bin, key_bin).tobytes())
 
                                 bytes_count += 8
-                                self.progressBar.setValue((bytes_count * 100) // file_size)
+                                self.progressBar.setValue((bytes_count * 100) // (file_size + 1))
                                 curr_time = time() - begin_time
-                                self.timeSpentText.setText(f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
+                                self.timeSpentText.setText(
+                                    f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
                         case 'CBC':
                             vect = init_vect_bin
                             while (text := file_input.read(8)):
@@ -286,9 +292,10 @@ class Ui_DES(object):
                                 file_output.write(vect.tobytes())
 
                                 bytes_count += 8
-                                self.progressBar.setValue((bytes_count * 100) // file_size)
+                                self.progressBar.setValue((bytes_count * 100) // (file_size + 1))
                                 curr_time = time() - begin_time
-                                self.timeSpentText.setText(f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
+                                self.timeSpentText.setText(
+                                    f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
                         case 'CFB':
                             vect = init_vect_bin
                             while (text := file_input.read(8)):
@@ -298,9 +305,10 @@ class Ui_DES(object):
                                 file_output.write(vect.tobytes())
 
                                 bytes_count += 8
-                                self.progressBar.setValue((bytes_count * 100) // file_size)
+                                self.progressBar.setValue((bytes_count * 100) // (file_size + 1))
                                 curr_time = time() - begin_time
-                                self.timeSpentText.setText(f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
+                                self.timeSpentText.setText(
+                                    f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
                         case 'OFB':
                             vect = init_vect_bin
                             while (text := file_input.read(8)):
@@ -310,9 +318,12 @@ class Ui_DES(object):
                                 file_output.write((vect ^ text_bin).tobytes())
 
                                 bytes_count += 8
-                                self.progressBar.setValue((bytes_count * 100) // file_size)
+                                self.progressBar.setValue((bytes_count * 100) // (file_size + 1))
                                 curr_time = time() - begin_time
-                                self.timeSpentText.setText(f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
+                                self.timeSpentText.setText(
+                                    f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
+
+                    os.truncate(self.inputFilePath.text(), file_size)
 
     def decryptText(self):
         match self.type.currentText():
@@ -345,11 +356,14 @@ class Ui_DES(object):
 
                     if len(self.key.text()[:8]) < 8:
                         print('Короткий ключ')
+                        os.truncate(self.inputFilePath.text(), file_size)
                         return
 
-                    if len(self.initVect.text()[:8]) < 8:
-                        print('Короткий вектор')
-                        return
+                    if self.mode.currentText() != 'ECB':
+                        if len(self.initVect.text()[:8]) < 8:
+                            print('Короткий вектор')
+                            os.truncate(self.inputFilePath.text(), file_size)
+                            return
 
                     key_bin = bitarray.bitarray()
                     key_bin.frombytes(self.key.text()[:8].encode('koi8-r'))
@@ -358,6 +372,8 @@ class Ui_DES(object):
 
                     bytes_count = 0
                     begin_time = time()
+
+                    true_file_size = int.from_bytes(file_input.read(8), byteorder='big')
                     match self.mode.currentText():
                         case 'ECB':
                             while (text := file_input.read(8)):
@@ -409,6 +425,8 @@ class Ui_DES(object):
                                 curr_time = time() - begin_time
                                 self.timeSpentText.setText(
                                     f'Размер файла {file_size} байт. Прошло времени: {round(curr_time)} секунд')
+
+                    file_output.truncate(true_file_size)
 
     def readTextFromFile(self, obj):
         path = QFileDialog.getOpenFileName()[0]
