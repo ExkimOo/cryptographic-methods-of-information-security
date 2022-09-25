@@ -27,7 +27,8 @@ from utils.polyalphabetic_cypher_cryptanalysis.polyCryptanalysisWindow import Ui
 from widgets.xorWindow import Ui_XOR
 from widgets.desWindow import Ui_DES
 from widgets.gostWindow import Ui_GOST
-
+from widgets.rsaWindow import Ui_RSA
+from widgets.diffieHellmanWindow import Ui_DiffieHellman
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -60,6 +61,18 @@ class Ui_MainWindow(object):
         self.cyphersList.setViewMode(QtWidgets.QListView.ListMode)
         self.cyphersList.setItemAlignment(QtCore.Qt.AlignCenter)
         self.cyphersList.setObjectName("cyphersList")
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -145,6 +158,10 @@ class Ui_MainWindow(object):
             self.desDialog()
         elif cypher == 'GOST':
             self.gostDialog()
+        elif cypher == 'RSA':
+            self.rsaDialog()
+        elif cypher == 'Diffie-Hellman':
+            self.dhDialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -248,6 +265,18 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.gost)
         self.gost.show()
 
+    def rsaDialog(self):
+        self.rsa = QtWidgets.QMainWindow()
+        self.ui = Ui_RSA()
+        self.ui.setupUi(self.rsa)
+        self.rsa.show()
+
+    def dhDialog(self):
+        self.dh = QtWidgets.QMainWindow()
+        self.ui = Ui_DiffieHellman()
+        self.ui.setupUi(self.dh)
+        self.dh.show()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cryptographic Methods of Information Security"))
@@ -288,4 +317,16 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "DES Cypher"))
         item = self.cyphersList.item(16)
         item.setText(_translate("MainWindow", "GOST Cypher"))
+        item = self.cyphersList.item(17)
+        item.setText(_translate("MainWindow", "RSA"))
+        item = self.cyphersList.item(18)
+        item.setText(_translate("MainWindow", "Diffie-Hellman"))
+        item = self.cyphersList.item(19)
+        item.setText(_translate("MainWindow", "Shamir"))
+        item = self.cyphersList.item(20)
+        item.setText(_translate("MainWindow", "ElGamal"))
+        item = self.cyphersList.item(21)
+        item.setText(_translate("MainWindow", "MD5"))
+        item = self.cyphersList.item(22)
+        item.setText(_translate("MainWindow", "SHA1"))
         self.cyphersList.setSortingEnabled(__sortingEnabled)
