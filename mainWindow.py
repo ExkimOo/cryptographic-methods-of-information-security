@@ -29,6 +29,12 @@ from widgets.desWindow import Ui_DES
 from widgets.gostWindow import Ui_GOST
 from widgets.rsaWindow import Ui_RSA
 from widgets.diffieHellmanWindow import Ui_DiffieHellman
+from widgets.shamirWindow import Ui_Shamir
+from widgets.elgamalWindow import Ui_ElGamal
+from widgets.md5Window import Ui_MD5
+from widgets.sha1Winow import Ui_SHA1
+from widgets.gost94Window import Ui_GOST94
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -61,6 +67,8 @@ class Ui_MainWindow(object):
         self.cyphersList.setViewMode(QtWidgets.QListView.ListMode)
         self.cyphersList.setItemAlignment(QtCore.Qt.AlignCenter)
         self.cyphersList.setObjectName("cyphersList")
+        item = QtWidgets.QListWidgetItem()
+        self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
         self.cyphersList.addItem(item)
         item = QtWidgets.QListWidgetItem()
@@ -162,6 +170,16 @@ class Ui_MainWindow(object):
             self.rsaDialog()
         elif cypher == 'Diffie-Hellman':
             self.dhDialog()
+        elif cypher == 'Shamir':
+            self.shamirDialog()
+        elif cypher == 'ElGamal':
+            self.elgamalDialog()
+        elif cypher == 'MD5':
+            self.md5Dialog()
+        elif cypher == 'SHA1':
+            self.sha1Dialog()
+        elif cypher == 'GOST94':
+            self.gost94Dialog()
 
     def atbashDialog(self):
         self.atbash = QtWidgets.QMainWindow()
@@ -277,6 +295,36 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.dh)
         self.dh.show()
 
+    def shamirDialog(self):
+        self.sh = QtWidgets.QMainWindow()
+        self.ui = Ui_Shamir()
+        self.ui.setupUi(self.sh)
+        self.sh.show()
+
+    def elgamalDialog(self):
+        self.elgamal = QtWidgets.QMainWindow()
+        self.ui = Ui_ElGamal()
+        self.ui.setupUi(self.elgamal)
+        self.elgamal.show()
+
+    def md5Dialog(self):
+        self.md5 = QtWidgets.QMainWindow()
+        self.ui = Ui_MD5()
+        self.ui.setupUi(self.md5)
+        self.md5.show()
+
+    def sha1Dialog(self):
+        self.sha1 = QtWidgets.QMainWindow()
+        self.ui = Ui_SHA1()
+        self.ui.setupUi(self.sha1)
+        self.sha1.show()
+
+    def gost94Dialog(self):
+        self.gost94 = QtWidgets.QMainWindow()
+        self.ui = Ui_GOST94()
+        self.ui.setupUi(self.gost94)
+        self.gost94.show()
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cryptographic Methods of Information Security"))
@@ -329,4 +377,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "MD5"))
         item = self.cyphersList.item(22)
         item.setText(_translate("MainWindow", "SHA1"))
+        item = self.cyphersList.item(23)
+        item.setText(_translate("MainWindow", "GOST94"))
         self.cyphersList.setSortingEnabled(__sortingEnabled)
